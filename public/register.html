@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - Cyber Titan Blue</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Roboto, sans-serif;
+      }
+
+      body {
+        background: url("img/titan-dai-hinh.jpg") no-repeat center center fixed;
+        background-size: cover;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        position: relative;
+      }
+
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+          circle,
+          rgba(0, 0, 0, 0) 20%,
+          rgba(0, 10, 20, 0.7) 100%
+        );
+        z-index: 0;
+      }
+
+      .box {
+        position: relative;
+        z-index: 1;
+        background: rgba(0, 212, 255, 0.02);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 40px;
+        border-radius: 25px;
+        width: 420px;
+        text-align: center;
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        box-shadow:
+          0 20px 40px rgba(0, 0, 0, 0.6),
+          0 0 20px rgba(0, 212, 255, 0.1);
+      }
+
+      h2 {
+        color: #fff;
+        margin-bottom: 10px;
+        font-size: 38px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        text-shadow: 0 0 15px #00d4ff;
+      }
+
+      p {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 14px;
+        margin-bottom: 25px;
+        font-weight: 500;
+        letter-spacing: 1px;
+      }
+
+      input {
+        width: 100%;
+        padding: 16px 20px;
+        margin: 10px 0;
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        border-radius: 12px;
+        outline: none;
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 600;
+        transition: 0.3s;
+      }
+
+      input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      input:focus {
+        background: rgba(0, 0, 0, 0.6);
+        border-color: #00d4ff;
+        box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+      }
+
+      button {
+        width: 100%;
+        padding: 16px;
+        margin-top: 20px;
+        background: linear-gradient(45deg, #005f73, #00d4ff);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        cursor: pointer;
+        transition: 0.5s;
+        box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 212, 255, 0.5);
+        letter-spacing: 3px;
+      }
+
+      a {
+        display: block;
+        margin-top: 25px;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        transition: 0.3s;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      a span {
+        color: #00d4ff;
+        text-shadow: 0 0 5px #00d4ff;
+      }
+
+      a:hover {
+        opacity: 0.8;
+      }
+
+      a:hover span {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="box">
+      <h2>REGISTER</h2>
+      <p>Ứng Dụng Chat Online Xuyên Lục Địa</p>
+
+      <input
+        id="username"
+        type="text"
+        placeholder="Tên đăng nhập"
+        autocomplete="off"
+      />
+      <input id="password" type="password" placeholder="Mật khẩu" />
+      <input
+        id="confirmPassword"
+        type="password"
+        placeholder="Xác nhận mật khẩu"
+      />
+
+      <button onclick="register()">CREATE NOW</button>
+
+      <a href="login.html">Đã có tài khoản? <span>Đăng nhập</span></a>
+    </div>
+
+    <script>
+      async function register() {
+        const user = document.getElementById("username").value.trim();
+        const pass = document.getElementById("password").value;
+        const confirmPass = document.getElementById("confirmPassword").value;
+
+        if (!user || !pass) return alert("Vui lòng nhập đủ thông tin!");
+        if (pass !== confirmPass) return alert("Mật khẩu không khớp!");
+
+        const response = await fetch("/api/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: user, password: pass }),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          alert("Đăng ký thành công!");
+          window.location = "login.html";
+        } else {
+          alert(result.message);
+        }
+      }
+    </script>
+  </body>
+</html>
